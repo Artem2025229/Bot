@@ -1,17 +1,19 @@
 import telebot
 import random
+import os
 
-bot = telebot.TeleBot("7630638761:AAH6nzRJRK7_c4in7-Iv2xwwWGcq-_MQuo")
+bot = telebot.TeleBot("7630638761:AAH6nzRJRKJ7_c4in7-Iv2xwwWGcq-_MQuo")
 
 # Словарь для команды /video
 videos = {
     "Что из себя представляет вселенная": "https://www.youtube.com/watch?v=V63UrLL7Avs",
     "Мемы": "https://www.youtube.com/watch?v=kZmm30pBlJY",
-    "Как картели варят наркотики": "https://www.youtube.com/watch?v=kdcxkmMoVV4&t"
-    "История доллара": "https://www.youtube.com/watch?v=oHqlOyjFAqw"
-    "История подделки денег": "https://www.youtube.com/watch?v=YViF19tE8fA&t"
-    "История видеоигр": "https://www.youtube.com/watch?v=fws1b2uFKV8" 
+    "Как картели варят наркотики": "https://www.youtube.com/watch?v=kdcxkmMoVV4&t",
+    "История доллара": "https://www.youtube.com/watch?v=oHqlOyjFAqw",
+    "История подделки денег": "https://www.youtube.com/watch?v=YViF19tE8fA&t",
+    "История видеоигр": "https://www.youtube.com/watch?v=fws1b2uFKV8"
 }
+
 
 
 
@@ -37,6 +39,7 @@ def send_help(message):
         "/help - Показать список команд"
         "/coin - Играть в орёл или решка"
         "/video - Получить случайное видео из списка"
+        "/memas - Получить случайный мем из списка"
     )
     bot.reply_to(message, f"Список команд:{commands_list}")
 
@@ -50,9 +53,17 @@ def send_video(message):
     video_name, video_link = random.choice(list(videos.items()))
     bot.reply_to(message, f"Вот тебе видео:{video_name}Ссылка: {video_link}")
 
+@bot.message_handler(commands=['memas'])
+def send_memas(message):
+    f = os.listdir('images')
+    f = random.choice(f)
+    with open('images/mem1.jpg', 'rb') as img:  
+        bot.send_photo(message.chat.id, img) 
+
 @bot.message_handler(func=lambda message: True)
 def echo_all(message):
     bot.reply_to(message, message.text)
 
-print('Бот запущен!')
+print('старт')
 bot.polling()
+
